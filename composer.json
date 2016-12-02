@@ -1,0 +1,19 @@
+{
+  "name": "wp-orbit/meta-boxes",
+  "description": "WordPress meta box helpers.",
+  "type": "wordpress-plugin-component",
+  "authors": [
+    {
+      "name": "Marty Eason",
+      "email": "dev@zawntech.com",
+      "role": "Developer",
+      "homepage": "http://zawntech.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "WPOrbit\\MetaBoxes\\": "/code"
+    }
+  }
+}
