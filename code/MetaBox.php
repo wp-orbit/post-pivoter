@@ -24,6 +24,11 @@ class MetaBox
      */
     protected $postTypes = [];
 
+    /**
+     * @var array An array of post slugs that this should be hooked into.
+     */
+    protected $postSlugs = [];
+
     public function __construct( $args )
     {
         if ( isset( $args['id'] ) ) {
@@ -34,6 +39,9 @@ class MetaBox
         }
         if ( isset( $args['postTypes'] ) ) {
             $this->postTypes = $args['postTypes'];
+        }
+        if ( isset( $args['postSlugs'] ) ) {
+            $this->postSlugs = $args['postSlugs'];
         }
 
         $this->register();
@@ -55,6 +63,10 @@ class MetaBox
         {
             add_action( "add_meta_boxes_{$postType}", function($post)
             {
+                // Check if there are matching post slugs.
+                if ( ! empty( $this->postSlugs ) && ! in_array( $post->post_name, $this->postSlugs ) ) {
+                    return;
+                }
                 add_meta_box(
                     $this->id,
                     $this->label,
