@@ -28,6 +28,7 @@ class FormMetaBox extends MetaBox
     {
         parent::__construct($args);
         $this->form = $form;
+        $this->form->setPostMetaContext();
     }
 
     /**
@@ -36,7 +37,7 @@ class FormMetaBox extends MetaBox
      */
     public function save($postId)
     {
-        $this->form->savePostMeta($postId);
+        $this->form->context->save($postId);
     }
 
     /**
@@ -45,7 +46,7 @@ class FormMetaBox extends MetaBox
      */
     public function render($post)
     {
-        $this->form->loadPostMeta( $post->ID );
+        $this->form->context->load( $post->ID );
         $this->form->render();
     }
 }
