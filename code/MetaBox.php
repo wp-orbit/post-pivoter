@@ -29,7 +29,7 @@ class MetaBox
      */
     protected $postSlugs = [];
 
-    public function __construct( $args )
+    public function __construct( $args = [] )
     {
         if ( isset( $args['id'] ) ) {
             $this->id = $args['id'];
