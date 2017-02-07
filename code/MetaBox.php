@@ -29,7 +29,7 @@ class MetaBox
      */
     protected $postSlugs = [];
 
-    public function __construct( $args )
+    public function __construct( $args = [] )
     {
         if ( isset( $args['id'] ) ) {
             $this->id = $args['id'];
@@ -47,12 +47,15 @@ class MetaBox
         $this->register();
     }
 
-    public function render($post)
+    /**
+     * @param \WP_Post $post
+     */
+    public function render( \WP_Post $post )
     {
         echo 'Override the render function.';
     }
 
-    public function save($postId)
+    public function save($postId, $postType)
     {
         // Override save function..
     }
@@ -79,7 +82,7 @@ class MetaBox
 
             add_action( 'save_post', function($postId) use ($postType)
             {
-                $this->save($postId);
+                $this->save($postId, $postType);
             });
         }
     }

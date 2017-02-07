@@ -44,7 +44,7 @@ class FormMetaBox extends MetaBox
      * Call Form->loadPostMeta() to preload meta box values.
      * @param $post
      */
-    public function render($post)
+    public function render( \WP_Post $post)
     {
         $this->form->context->load( $post->ID );
         $this->form->render();
