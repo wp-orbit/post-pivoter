@@ -29,6 +29,24 @@ class MetaBox
      */
     protected $postSlugs = [];
 
+    /**
+     * Get meta box (element) ID.
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get meta box label.
+     * @return mixed|string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
     public function __construct( $args = [] )
     {
         if ( isset( $args['id'] ) ) {
