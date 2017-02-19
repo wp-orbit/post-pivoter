@@ -1,6 +1,7 @@
 <?php
 namespace WPOrbit\MetaBoxes;
-use WPOrbit\Taxonomies\TaxonomyPivoter;
+
+use WPOrbit\Taxonomies\Pivoter\TaxonomyPivoter;
 
 /**
  * A post pivot metabox "pivots" relationships between post types through a

@@ -2,7 +2,7 @@
 namespace WPOrbit\MetaBoxes\Ajax;
 
 use WPOrbit\Ajax\AjaxController;
-use WPOrbit\Taxonomies\TaxonomyPivoter;
+use WPOrbit\Taxonomies\Pivoter\TaxonomyPivoter;
 
 class PostPivotMetaBoxAjaxController extends AjaxController
 {
