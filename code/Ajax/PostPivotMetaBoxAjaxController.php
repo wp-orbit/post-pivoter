@@ -32,8 +32,18 @@ class PostPivotMetaBoxAjaxController extends AjaxController
         $postId = $_POST['data']['postId'];
         $attach = $_POST['data']['attach'];
         $taxonomy = $_POST['data']['taxonomy'];
+        $multiple = $_POST['data']['multiple'];
 
+        // Instantiate the pivoter.
         $pivoter = new TaxonomyPivoter( $postId, $taxonomy );
+
+        // Unset old relations?
+        if ( 'false' == $multiple ) {
+            foreach( $pivoter->getIds() as $id ) {
+                $pivoter->removeRelation( $id ) ;
+            }
+        }
+
         $pivoter->addRelation( $attach );
 
         $this->json( true );

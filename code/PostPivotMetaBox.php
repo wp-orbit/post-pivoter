@@ -36,6 +36,11 @@ class PostPivotMetaBox extends MetaBox
     protected $post;
 
     /**
+     * @var bool Allow multiple relations?
+     */
+    protected $multipleRelations = true;
+
+    /**
      * @return \WP_Post[]
      */
     protected function getPivotablePosts()
@@ -66,14 +71,23 @@ class PostPivotMetaBox extends MetaBox
         if ( isset( $args['pivotPostType'] ) ) {
             $this->pivotPostType = $args['pivotPostType'];
         }
-        if ( isset( $args['relatedPostType'] ) ) {
-            $this->relatedPostType = $args['relatedPostType'];
+        if ( isset( $args['multipleRelations'] ) ) {
+            $this->multipleRelations = $args['multipleRelations'];
         }
+    }
+
+    public function getPostTypeLabels()
+    {
+        $object = get_post_type_object( $this->pivotPostType );
+
+        return [
+            'singular' => $object->labels->singular_name,
+            'plural' => $object->labels->name
+        ];
     }
 
     public function getArgs( \WP_Post $post )
     {
-        $object = get_post_type_object( $this->pivotPostType );
 
         return [
             'parentId' => $post->ID,
@@ -81,7 +95,8 @@ class PostPivotMetaBox extends MetaBox
             'pivotablePosts' => $this->getPivotablePosts(),
             'nonce' => wp_create_nonce( 'post-pivot-meta-box' ),
             'taxonomy' => $this->taxonomy,
-            'relatedPostTypeObject' => $object
+            'relatedPostTypeObject' => get_post_type_object( $this->pivotPostType ),
+            'multipleRelations' => $this->multipleRelations
         ];
     }
 
@@ -171,6 +186,15 @@ class PostPivotMetaBox extends MetaBox
             <!-- /ko -->
         </ul>
         <!-- /ko -->
+
+        <?php if ( ! $this->multipleRelations ) : ?>
+        <small>
+            <i>
+                Attaching another <?php echo $this->getPostTypeLabels()['singular']; ?>
+                will replace any existing current attachment.
+            </i>
+        </small>
+        <?php endif; ?>
         <?php
     }
 

@@ -6,6 +6,7 @@ interface PostsPivoterViewModelArgs
     nonce: string;
     taxonomy: string;
     relatedPostTypeObject: any;
+    multipleRelations: boolean;
 }
 
 class PostsPivoterViewModel
@@ -14,6 +15,7 @@ class PostsPivoterViewModel
     parentId: Number;
     nonce: string;
     taxonomy: string;
+    multipleRelations: boolean;
 
     view = ko.observable('list');
     filter = ko.observable('all');
@@ -38,9 +40,13 @@ class PostsPivoterViewModel
             postId: this.parentId,
             attach: postId,
             nonce: this.nonce,
-            taxonomy: this.taxonomy
+            taxonomy: this.taxonomy,
+            multiple: this.multipleRelations
         }, (r) => {
-            // Add the post ID to the attach post IDs observable array.
+            if ( false == this.multipleRelations ) {
+                this.attachedPostIds([]);
+            }
+            // Add the post ID to the attach post IDs observable array.)
             this.attachedPostIds.push( postId );
             post.busy(false);
         }, (r) => {
@@ -86,6 +92,7 @@ class PostsPivoterViewModel
         this.nonce = args.nonce;
         // Set the taxonomy we're working with for establishing post relationships.
         this.taxonomy = args.taxonomy;
+        this.multipleRelations = args.multipleRelations;
 
         // Prepare posts before injecting to view model.
         _.each( args.pivotablePosts, this.preparePost );
