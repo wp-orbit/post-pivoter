@@ -139,7 +139,7 @@ class PostPivotMetaBox extends MetaBox
         ?>
         <!-- ko if: 'list' == view() -->
         <ul class="list-group">
-            <!-- ko foreach: allPosts -->
+            <!-- ko foreach: filteredPosts -->
             <li class="list-group-item" data-bind="
                 css: { 'list-group-item-success': $parent.isAttached( $data ) }
                 ">

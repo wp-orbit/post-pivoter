@@ -28,6 +28,35 @@ class PostsPivoterViewModel
         return this.posts();
     });
 
+    filteredPosts = ko.pureComputed(() => {
+
+        let posts = this.posts();
+
+        if ( 'attached' == this.filter() ) {
+            posts = this.filters.attached(posts);
+        }
+
+        if ( 'unattached' == this.filter() ) {
+            posts = this.filters.unattached(posts);
+        }
+
+        return posts;
+    });
+
+    filters = {
+        attached: (posts) => {
+            return _.filter(posts, (post) => {
+                return -1 != this.attachedPostIds.indexOf(String(post.ID));
+            });
+        },
+
+        unattached: (posts) => {
+            return _.filter(posts, (post) => {
+                return -1 == this.attachedPostIds.indexOf(String(post.ID));
+            });
+        }
+    };
+
     attachedPostIds = ko.observableArray([]);
 
     attachPost(post)
