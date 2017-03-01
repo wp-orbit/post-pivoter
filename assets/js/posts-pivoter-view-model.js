@@ -10,10 +10,13 @@ var PostsPivoterViewModel = (function () {
             return _this.posts();
         });
         this.filteredPosts = ko.pureComputed(function () {
+            // Get all posts.
             var posts = _this.posts();
+            // Filter attached.
             if ('attached' == _this.filter()) {
                 posts = _this.filters.attached(posts);
             }
+            // Filter unattached.
             if ('unattached' == _this.filter()) {
                 posts = _this.filters.unattached(posts);
             }
@@ -44,7 +47,11 @@ var PostsPivoterViewModel = (function () {
         // Inject all available post models.
         this.posts(args.pivotablePosts);
         // Preload attached post IDs.
-        this.attachedPostIds(args.relatedPostIds);
+        var related = [];
+        _.each(args.relatedPostIds, function (id) {
+            related.push(String(id));
+        });
+        this.attachedPostIds(related);
         // Set the related post type plural label.
         this.relatedPostsLabel(args.relatedPostTypeObject.labels.name);
     }
@@ -66,7 +73,7 @@ var PostsPivoterViewModel = (function () {
             _this.attachedPostIds.push(postId);
             post.busy(false);
         }, function (r) {
-            console.log(r);
+            // console.log(r);
             post.busy(false);
         });
     };

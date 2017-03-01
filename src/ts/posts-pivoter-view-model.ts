@@ -30,12 +30,14 @@ class PostsPivoterViewModel
 
     filteredPosts = ko.pureComputed(() => {
 
+        // Get all posts.
         let posts = this.posts();
 
+        // Filter attached.
         if ( 'attached' == this.filter() ) {
             posts = this.filters.attached(posts);
         }
-
+        // Filter unattached.
         if ( 'unattached' == this.filter() ) {
             posts = this.filters.unattached(posts);
         }
@@ -49,13 +51,13 @@ class PostsPivoterViewModel
                 return -1 != this.attachedPostIds.indexOf(String(post.ID));
             });
         },
-
         unattached: (posts) => {
             return _.filter(posts, (post) => {
                 return -1 == this.attachedPostIds.indexOf(String(post.ID));
             });
         }
     };
+
 
     attachedPostIds = ko.observableArray([]);
 
@@ -79,7 +81,7 @@ class PostsPivoterViewModel
             this.attachedPostIds.push( postId );
             post.busy(false);
         }, (r) => {
-            console.log(r);
+            // console.log(r);
             post.busy(false);
         });
     }
@@ -129,7 +131,14 @@ class PostsPivoterViewModel
         this.posts( args.pivotablePosts );
 
         // Preload attached post IDs.
-        this.attachedPostIds( args.relatedPostIds );
+        let related = [];
+        _.each( args.relatedPostIds, (id) => {
+            related.push( String(id) );
+        });
+        this.attachedPostIds(related);
+
+
+
         // Set the related post type plural label.
         this.relatedPostsLabel(args.relatedPostTypeObject.labels.name);
     }
