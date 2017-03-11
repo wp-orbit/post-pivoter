@@ -7,6 +7,8 @@ interface PostsPivoterViewModelArgs
     taxonomy: string;
     relatedPostTypeObject: any;
     multipleRelations: boolean;
+    inversePivot: boolean;
+    inversePostType: any;
 }
 
 class PostsPivoterViewModel
@@ -16,6 +18,8 @@ class PostsPivoterViewModel
     nonce: string;
     taxonomy: string;
     multipleRelations: boolean;
+    inversePivot: boolean;
+    inversePostType: any;
 
     view = ko.observable('list');
     filter = ko.observable('all');
@@ -72,7 +76,9 @@ class PostsPivoterViewModel
             attach: postId,
             nonce: this.nonce,
             taxonomy: this.taxonomy,
-            multiple: this.multipleRelations
+            multiple: this.multipleRelations,
+            inversePivot: this.inversePivot,
+            inversePostType: this.inversePostType
         }, (r) => {
             if ( false == this.multipleRelations ) {
                 this.attachedPostIds([]);
@@ -96,7 +102,9 @@ class PostsPivoterViewModel
             postId: this.parentId,
             detach: postId,
             nonce: this.nonce,
-            taxonomy: this.taxonomy
+            taxonomy: this.taxonomy,
+            inversePivot: this.inversePivot,
+            inversePostType: this.inversePostType
         }, (r) => {
             // Remove the post ID to the attach post IDs observable array.
             this.attachedPostIds.remove(postId);
@@ -137,9 +145,11 @@ class PostsPivoterViewModel
         });
         this.attachedPostIds(related);
 
-
-
         // Set the related post type plural label.
         this.relatedPostsLabel(args.relatedPostTypeObject.labels.name);
+
+        // Inverse post type.
+        this.inversePivot = args.inversePivot;
+        this.inversePostType = args.inversePostType;
     }
 }

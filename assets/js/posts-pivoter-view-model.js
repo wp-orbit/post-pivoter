@@ -54,6 +54,9 @@ var PostsPivoterViewModel = (function () {
         this.attachedPostIds(related);
         // Set the related post type plural label.
         this.relatedPostsLabel(args.relatedPostTypeObject.labels.name);
+        // Inverse post type.
+        this.inversePivot = args.inversePivot;
+        this.inversePostType = args.inversePostType;
     }
     PostsPivoterViewModel.prototype.attachPost = function (post) {
         var _this = this;
@@ -64,7 +67,9 @@ var PostsPivoterViewModel = (function () {
             attach: postId,
             nonce: this.nonce,
             taxonomy: this.taxonomy,
-            multiple: this.multipleRelations
+            multiple: this.multipleRelations,
+            inversePivot: this.inversePivot,
+            inversePostType: this.inversePostType
         }, function (r) {
             if (false == _this.multipleRelations) {
                 _this.attachedPostIds([]);
@@ -85,7 +90,9 @@ var PostsPivoterViewModel = (function () {
             postId: this.parentId,
             detach: postId,
             nonce: this.nonce,
-            taxonomy: this.taxonomy
+            taxonomy: this.taxonomy,
+            inversePivot: this.inversePivot,
+            inversePostType: this.inversePostType
         }, function (r) {
             // Remove the post ID to the attach post IDs observable array.
             _this.attachedPostIds.remove(postId);

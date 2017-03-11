@@ -24,6 +24,17 @@ class PostPivotMetaBox extends MetaBox
     protected $taxonomy;
 
     /**
+     * Reference inverse parent->child relationships if true.
+     * @var bool
+     */
+    protected $inversePivot = false;
+
+    /**
+     * @var string
+     */
+    protected $inversePostType;
+
+    /**
      * The post types we're relating.
      * @var mixed|string
      */
@@ -68,6 +79,12 @@ class PostPivotMetaBox extends MetaBox
         if ( isset( $args['taxonomy'] ) ) {
             $this->taxonomy = $args['taxonomy'];
         }
+        if ( isset( $args['inversePivot'] ) ) {
+            $this->inversePivot = $args['inversePivot'];
+        }
+        if ( isset( $args['inversePostType'] ) ) {
+            $this->inversePostType = $args['inversePostType'];
+        }
         if ( isset( $args['pivotPostType'] ) ) {
             $this->pivotPostType = $args['pivotPostType'];
         }
@@ -96,7 +113,9 @@ class PostPivotMetaBox extends MetaBox
             'nonce' => wp_create_nonce( 'post-pivot-meta-box' ),
             'taxonomy' => $this->taxonomy,
             'relatedPostTypeObject' => get_post_type_object( $this->pivotPostType ),
-            'multipleRelations' => $this->multipleRelations
+            'multipleRelations' => $this->multipleRelations,
+            'inversePivot' => $this->inversePivot,
+            'inversePostType' => $this->inversePostType
         ];
     }
 
@@ -143,7 +162,9 @@ class PostPivotMetaBox extends MetaBox
             <li class="list-group-item" data-bind="
                 css: { 'list-group-item-success': $parent.isAttached( $data ) }
                 ">
+
                 <span data-bind="text: $data.post_title"></span>
+                <a href="#" data-bind="attr: { href: '<?php echo admin_url(); ?>post.php?action=edit&post=' + $data.ID }" target="_blank">[edit]</a>
 
                 <div class="pull-right">
 
@@ -218,6 +239,11 @@ class PostPivotMetaBox extends MetaBox
         // Instantiate a post pivoter.
         $this->pivoter = new TaxonomyPivoter( $post->ID, $taxonomy );
         $this->pivoter->pivotPosts( $this->pivotPostType );
+
+        if ( $this->inversePivot ) {
+            $this->pivoter->inversePivot( $post->post_type );
+        }
+
         ?>
 
         <div class="hide-on-load">

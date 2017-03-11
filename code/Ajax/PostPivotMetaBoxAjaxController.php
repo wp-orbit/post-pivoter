@@ -33,9 +33,16 @@ class PostPivotMetaBoxAjaxController extends AjaxController
         $attach = $_POST['data']['attach'];
         $taxonomy = $_POST['data']['taxonomy'];
         $multiple = $_POST['data']['multiple'];
+        $inversePivot = $_POST['data']['inversePivot'];
+        $inversePostType = $_POST['data']['inversePostType'];
 
         // Instantiate the pivoter.
         $pivoter = new TaxonomyPivoter( $postId, $taxonomy );
+
+        // False.
+        if ( 'false' != $inversePivot ) {
+            $pivoter->inversePivot( $inversePostType );
+        }
 
         // Unset old relations?
         if ( 'false' == $multiple ) {
@@ -56,8 +63,16 @@ class PostPivotMetaBoxAjaxController extends AjaxController
         $postId = $_POST['data']['postId'];
         $detach = $_POST['data']['detach'];
         $taxonomy = $_POST['data']['taxonomy'];
+        $inversePivot = $_POST['data']['inversePivot'];
+        $inversePostType = $_POST['data']['inversePostType'];
 
         $pivoter = new TaxonomyPivoter( $postId, $taxonomy );
+
+        // Inverse pivot.
+        if ( 'false' != $inversePivot ) {
+            $pivoter->inversePivot( $inversePostType );
+        }
+
         $pivoter->removeRelation( $detach );
 
         $this->json( true );
